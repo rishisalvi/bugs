@@ -2,11 +2,9 @@ import info.gridworld.actor.Flower;
 import java.awt.Color;
 public class Blossom extends Flower{
     private static final Color DEFAULT_COLOR = Color.GREEN;
-    private static final double DARKENING_FACTOR = 0.05;
+    private static double factor; 
     private static int steps;
     private static int stepLimit; 
-
-    // lose 5% of color value in each step
 
     /**
      * Constructs a pink flower.
@@ -14,7 +12,8 @@ public class Blossom extends Flower{
     public Blossom()
     {
         steps = 0; 
-        stepLimit = 0; 
+        stepLimit = 10; 
+        factor = 1.00 / stepLimit; 
         setColor(DEFAULT_COLOR);
     }
 
@@ -24,8 +23,9 @@ public class Blossom extends Flower{
      */
     public Blossom(int limit)
     {
-        stepLimit = limit;
         steps = 0; 
+        stepLimit = limit;
+        factor = 1.00 / stepLimit; 
         setColor(DEFAULT_COLOR);
     }
 
@@ -34,12 +34,12 @@ public class Blossom extends Flower{
      */
     public void act()
     {
-        if (steps == 10)
+        if (steps >= stepLimit)
             removeSelfFromGrid();
         Color c = getColor();
-        int red = (int) (c.getRed() * (1 - DARKENING_FACTOR));
-        int green = (int) (c.getGreen() * (1 - DARKENING_FACTOR));
-        int blue = (int) (c.getBlue() * (1 - DARKENING_FACTOR));
+        int red = (int) (c.getRed() * (1 - factor));
+        int green = (int) (c.getGreen() * (1 - factor));
+        int blue = (int) (c.getBlue() * (1 - factor));
 
         setColor(new Color(red, green, blue));
         steps++; 
